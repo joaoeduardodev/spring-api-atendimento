@@ -3,6 +3,8 @@ package com.atendimento.api.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.atendimento.api.request.ClientePostRequestBody;
+import com.atendimento.api.request.ClientePutRequestBody;
 import com.atendimento.api.service.ClienteService;
 import com.atendimento.api.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +33,13 @@ public class ClienteController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Cliente> findById(@PathVariable long id){
-		return ResponseEntity.ok(clienteService.findById(id)) ;
+		return ResponseEntity.ok(clienteService.findByIdOrThrowBadRequestException(id)) ;
 
 	}
 
 	@PostMapping
-	public  ResponseEntity<Cliente> save(@RequestBody Cliente cliente){
-		return new ResponseEntity<>(clienteService.save(cliente), HttpStatus.CREATED);
+	public  ResponseEntity<Cliente> save(@RequestBody ClientePostRequestBody clientePostRequestBody){
+		return new ResponseEntity<>(clienteService.save(clientePostRequestBody), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(path = "/{id}")
@@ -47,8 +49,8 @@ public class ClienteController {
 	}
 
 	@PutMapping
-	public  ResponseEntity<Void> replace(@RequestBody Cliente cliente){
-		clienteService.replace(cliente);
+	public  ResponseEntity<Void> replace(@RequestBody ClientePutRequestBody clientePutRequestBody){
+		clienteService.replace(clientePutRequestBody);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
