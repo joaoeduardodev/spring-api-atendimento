@@ -4,10 +4,11 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/atendimento?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&
+    url: jdbc:mysql://localhost:3306/atendimento?createDatabaseIfNotExist=true&
     username: root
     password: root
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
 

@@ -37,6 +37,12 @@ public class ClienteController {
 
 	}
 
+	@GetMapping(path = "/find")
+	public ResponseEntity<List<Cliente>> findByNome(@RequestParam String nome){
+		return ResponseEntity.ok(clienteService.findByNome(nome)) ;
+
+	}
+
 	@PostMapping
 	public  ResponseEntity<Cliente> save(@RequestBody ClientePostRequestBody clientePostRequestBody){
 		return new ResponseEntity<>(clienteService.save(clientePostRequestBody), HttpStatus.CREATED);

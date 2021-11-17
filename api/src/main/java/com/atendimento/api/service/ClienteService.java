@@ -1,6 +1,7 @@
 package com.atendimento.api.service;
 
 import com.atendimento.api.domain.Cliente;
+import com.atendimento.api.mapper.ClienteMapper;
 import com.atendimento.api.repository.ClienteRepository;
 import com.atendimento.api.request.ClientePostRequestBody;
 import com.atendimento.api.request.ClientePutRequestBody;
@@ -21,14 +22,16 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public List<Cliente> findByNome(String nome){
+        return clienteRepository.findByNome(nome);
+    }
+
     public Cliente findByIdOrThrowBadRequestException(long id){
         return clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cliente não encontrado"));
     }
 
     public Cliente save(ClientePostRequestBody clientePostRequestBody) {
-        Cliente cliente = Cliente.builder().nome(clientePostRequestBody.getNome()).build();
-
-        return clienteRepository.save(cliente);
+        return clienteRepository.save(ClienteMapper.INSTANCE.ToCliente(clientePostRequestBody));
     }
 
     public void delete(long id) {
@@ -37,12 +40,12 @@ public class ClienteService {
 
     public void replace(ClientePutRequestBody clientePutRequestBody) {
 
+
         Cliente savedCliente = findByIdOrThrowBadRequestException(clientePutRequestBody.getId());
 
-        Cliente cliente = Cliente.builder()
-                .id(savedCliente.getId())
-                .nome(clientePutRequestBody.getNome())
-                .build();
+        Cliente cliente = ClienteMapper.INSTANCE.ToCliente(clientePutRequestBody);
+
+        cliente.setId(savedCliente.getId());
 
         clienteRepository.save(cliente);
     }
